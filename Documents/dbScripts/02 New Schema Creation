@@ -1,0 +1,395 @@
+
+DROP DATABASE  IF EXISTS `hb_crowdfunding_tracker`;
+
+CREATE DATABASE  IF NOT EXISTS `hb_crowdfunding_tracker`;
+
+USE `hb_crowdfunding_tracker`;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+--
+-- Table structure for table `country`
+--
+
+DROP TABLE IF EXISTS `country`;
+
+CREATE TABLE `country` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country_name` varchar(45) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `user_account`
+--
+
+DROP TABLE IF EXISTS `user_account`;
+
+CREATE TABLE `user_account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(64) DEFAULT NULL,
+  `last_name` varchar(64) DEFAULT NULL,
+  `user_name` varchar(64) DEFAULT NULL,
+  `password` varchar(64) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `projects_supported` int(11) DEFAULT NULL,
+  `total_amount` decimal(12,2) DEFAULT NULL,  
+  `country_id` int(11) DEFAULT NULL,
+  
+  PRIMARY KEY (`id`),
+  KEY `FK_COUNTRY_idx` (`country_id`),
+  CONSTRAINT `FK_COUNTRY` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `user_role`
+--
+
+DROP TABLE IF EXISTS `user_role`;
+
+CREATE TABLE `user_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(64) DEFAULT NULL,
+    
+  PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+  
+--
+-- Table structure for table `user_role_map`
+--
+
+DROP TABLE IF EXISTS `user_role_map`;
+
+CREATE TABLE `user_role_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_account_id` int(11) DEFAULT NULL,
+  `user_role_id` int(11) DEFAULT NULL,
+    
+  PRIMARY KEY (`id`),
+  KEY `FK_ACCOUNT_MAP_idx` (`user_account_id`),
+   KEY `FK_ROLE_MAP_idx` (`user_role_id`)
+  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+  
+--
+-- Table structure for table `material_type`
+--
+
+DROP TABLE IF EXISTS `material_type`;
+
+CREATE TABLE `material_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(45) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `project_status`
+--
+
+DROP TABLE IF EXISTS `project_status`;
+
+CREATE TABLE `project_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status_name` varchar(45) DEFAULT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `material`
+--
+
+DROP TABLE IF EXISTS `material`;
+CREATE TABLE `material` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+   `project_id` int(11) DEFAULT NULL ,
+   `material_type_id` int(11) DEFAULT NULL ,
+  `description` text DEFAULT NULL,
+   `link` text DEFAULT NULL,
+   PRIMARY KEY (`id`),
+   KEY `FK_MATERIAL_idx` (`material_type_id`),
+   KEY `FK_PROJECT_idx` (`project_id`))
+  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+  
+--
+-- Table structure for table `project`
+--
+
+DROP TABLE IF EXISTS `project`;
+CREATE TABLE `project` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+   `project_name` varchar(255) DEFAULT NULL ,
+   `organisation_id` int(11) DEFAULT NULL ,
+   `user_account_id` int(11) DEFAULT NULL ,
+    `project_description` text DEFAULT NULL,
+	`project_location` text DEFAULT NULL,
+   `start_date` date DEFAULT NULL,
+   `end_date` date DEFAULT NULL,
+   `goal` decimal(12,2) DEFAULT NULL,
+   `pledged` decimal(12,2) DEFAULT NULL,
+   `investors` int(11) DEFAULT NULL,
+   `project_status_id` int(11) DEFAULT NULL,
+   
+   PRIMARY KEY (`id`),
+   KEY `FK_ORGANISATION_idx` (`organisation_id`),
+   KEY `FK_STATUS_idx` (`project_status_id`),
+   KEY `FK_USER_idx` (`user_account_id`))
+  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+  
+  
+ --
+-- Table structure for table `project_status_history`
+--
+
+DROP TABLE IF EXISTS `project_status_history`;
+CREATE TABLE `project_status_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+     `project_id` int(11) DEFAULT NULL ,
+   `project_status_id` int(11) DEFAULT NULL ,
+    `timestamp` timestamp DEFAULT NULL,
+   
+   PRIMARY KEY (`id`),
+   KEY `FK_STATUS_idx` (`project_status_id`),
+   KEY `FK_PROJECT_idx` (`project_id`))
+  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+  
+--
+-- Table structure for table `parameters`
+--
+
+DROP TABLE IF EXISTS `parameters`;
+CREATE TABLE `parameters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+     `project_id` int(11) DEFAULT NULL ,
+   `end_date` date DEFAULT NULL ,
+   `goal` decimal(12,2) DEFAULT NULL,
+    `timestamp` timestamp DEFAULT NULL,
+   
+   PRIMARY KEY (`id`),
+   KEY `FK_PROJECT_idx` (`project_id`))
+  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `comment`
+--
+
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+     `project_id` int(11) DEFAULT NULL ,
+   `user_account_id` int(11) DEFAULT NULL ,
+   `comment_text` text DEFAULT NULL,
+    `timestamp` timestamp DEFAULT NULL,
+   
+   PRIMARY KEY (`id`),
+   KEY `FK_PROJECT_idx` (`project_id`),
+   KEY `FK_ACCOUNT_idx` (`user_account_id`)
+   )
+  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `update`
+--
+
+
+  DROP TABLE IF EXISTS `update`;
+CREATE TABLE `update` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+     `project_id` int(11) DEFAULT NULL ,
+   `user_account_id` int(11) DEFAULT NULL ,
+   `update_text` text DEFAULT NULL,
+    `timestamp` timestamp DEFAULT NULL,
+   
+   PRIMARY KEY (`id`),
+   KEY `FK_PROJECT_idx` (`project_id`),
+   KEY `FK_ACCOUNT_idx` (`user_account_id`)
+   )
+  ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+  
+--
+-- Table structure for table `participant`
+--
+
+DROP TABLE IF EXISTS `participant`;
+
+CREATE TABLE `participant` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(64) DEFAULT NULL,
+  `last_name` varchar(64) DEFAULT NULL,
+  `title` varchar(64) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `user_account_id` int(11) DEFAULT NULL,
+  `organisation_id` int(11) DEFAULT NULL,
+  `participated_in` int(11) DEFAULT NULL,
+  
+  PRIMARY KEY (`id`),
+  KEY `FK_ACCOUNT_idx` (`user_account_id`),
+  KEY `FK_ORGANISATION_idx` (`organisation_id`) 
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `organisation`
+--
+DROP TABLE IF EXISTS `organisation`;
+CREATE TABLE `organisation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+   `organisation_name` varchar(255) DEFAULT NULL ,
+   `details` text DEFAULT NULL,   
+   
+   PRIMARY KEY (`id`)
+   )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `project_team`
+--
+DROP TABLE IF EXISTS `project_team`;
+CREATE TABLE `project_team` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) DEFAULT NULL ,
+  `project_role_id` int(11) DEFAULT NULL ,
+  `participant_id` int(11) DEFAULT NULL ,
+   `participant_responsiblities` text DEFAULT NULL,   
+   
+   PRIMARY KEY (`id`),
+   KEY `FK_PROJECT_TEAM_idx` (`project_id`),
+   KEY `FK_PROJECT_ROLE_TEAM_idx` (`project_role_id`),
+    KEY `FK_PARTICIPANT_TEAM_idx` (`participant_id`)
+   )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `project_role`
+--
+DROP TABLE IF EXISTS `project_role`;
+CREATE TABLE `project_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+   `organisation_name` varchar(64) DEFAULT NULL ,
+   
+   PRIMARY KEY (`id`)
+   )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `project_investor`
+--
+DROP TABLE IF EXISTS `project_investor`;
+CREATE TABLE `project_investor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) DEFAULT NULL ,
+  `user_account_id` int(11) DEFAULT NULL ,
+  `project_investment_option_id` int(11) DEFAULT NULL ,
+  `pledged` decimal(12,2) DEFAULT NULL ,
+   `timestamp` timestamp DEFAULT NULL,   
+   
+   PRIMARY KEY (`id`),
+   KEY `FK_PROJECT_INVESTOR_idx` (`project_id`),
+   KEY `FK_ACCOUNT_INVESTOR_idx` (`user_account_id`),
+    KEY `FK_INVESTMENT_OPTION_INVESTOR_idx` (`project_investment_option_id`)
+   )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Table structure for table `project_investment_option`
+--
+DROP TABLE IF EXISTS `project_investment_option`;
+CREATE TABLE `project_investment_option` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) DEFAULT NULL ,
+  `investment_option_catalog_id` int(11) DEFAULT NULL ,
+  `option_name` varchar(255) DEFAULT NULL ,
+   `option_description` text DEFAULT NULL,   
+   
+   PRIMARY KEY (`id`),
+   KEY `FK_PROJECT_OPTION_idx` (`project_id`),
+   KEY `FK_INVEST_CATALOG_idx` (`investment_option_catalog_id`)
+   )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+      
+
+--
+-- Table structure for table `investment_option_catalog`
+--
+DROP TABLE IF EXISTS `investment_option_catalog`;
+CREATE TABLE `investment_option_catalog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `option_name` varchar(255) DEFAULT NULL ,
+  `fund_min` decimal(12,2) DEFAULT NULL ,
+    `fund_max` decimal(12,2) DEFAULT NULL , 
+   
+   PRIMARY KEY (`id`)
+   )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+   
+
+
+  ALTER TABLE `user_role_map`
+  ADD CONSTRAINT `FK_ACCOUNT_MAP` FOREIGN KEY (`user_account_id`)
+  REFERENCES `user_account` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION, 
+  ADD CONSTRAINT `FK_ROLE_MAP` FOREIGN KEY (`user_role_id`) REFERENCES `user_role` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+  ALTER TABLE `material`
+  ADD CONSTRAINT `FK_MATERIAL` FOREIGN KEY (`material_type_id`)
+  REFERENCES `material_type` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION, 
+  ADD CONSTRAINT `FK_PROJECT` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+  ALTER TABLE `project`
+  ADD CONSTRAINT `FK_ORGANISATION` FOREIGN KEY (`organisation_id`)
+  REFERENCES `organisation` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION, 
+  ADD CONSTRAINT `FK_ACCOUNT_PROJECT` FOREIGN KEY (`user_account_id`) REFERENCES `user_account` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_STATUS` FOREIGN KEY (`project_status_id`) REFERENCES `project_status` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+  ALTER TABLE `project_status_history`
+  ADD CONSTRAINT `FK_STATUS_HISTORY` FOREIGN KEY (`project_status_id`)
+  REFERENCES `project_status` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION, 
+  ADD CONSTRAINT `FK_PROJECT_HISTORY` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+  ALTER TABLE `parameters`
+  ADD CONSTRAINT `FK_PROJECT_PARAMETER` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+    
+  ALTER TABLE `comment`
+  ADD CONSTRAINT `FK_PROJECT_COMMENT` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ACCOUNT_COMMENT` FOREIGN KEY (`user_account_id`) REFERENCES `user_account` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+      
+  ALTER TABLE `update`
+  ADD CONSTRAINT `FK_PROJECT_UPDATE` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ACCOUNT_UPDATE` FOREIGN KEY (`user_account_id`) REFERENCES `user_account` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+  ALTER TABLE `participant`
+  ADD CONSTRAINT `FK_ACCOUNT_PARTICIPANT` FOREIGN KEY (`user_account_id`) REFERENCES `user_account` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ORGANISATION_PARTICIPANT` FOREIGN KEY (`organisation_id`) REFERENCES `organisation` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+    ALTER TABLE `project_team`
+  ADD CONSTRAINT `FK_PROJECT_TEAM` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_PROJECT_ROLE_TEAM` FOREIGN KEY (`project_role_id`) REFERENCES `project_role` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+   ADD CONSTRAINT `FK_PARTICIPANT_TEAM` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+      ALTER TABLE `project_investor`
+  ADD CONSTRAINT `FK_PROJECT_INVESTOR` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_ACCOUNT_INVESTOR_idx` FOREIGN KEY (`user_account_id`) REFERENCES `user_account` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+   ADD CONSTRAINT `FK_INVESTMENT_OPTION_INVESTOR` FOREIGN KEY (`project_investment_option_id`) REFERENCES `project_investment_option` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+  ALTER TABLE `project_investment_option`
+  ADD CONSTRAINT `FK_PROJECT_OPTION` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_INVEST_CATALOG` FOREIGN KEY (`investment_option_catalog_id`) REFERENCES `investment_option_catalog` (`id`) 
+  ON DELETE NO ACTION ON UPDATE NO ACTION;
+  
+  SET FOREIGN_KEY_CHECKS = 1;

@@ -59,19 +59,18 @@ public class UserAccount {
 	@Column(name = "email")
 	private String email;
 
-	@Column(name = "project_supported")
-	private int projectSupported;
+	@Column(name = "projects_supported")
+	private int projectsSupported;
 
 	@Column(name = "total_amount")
 	private double totalAmount;
 
-	@Column(name = "country_id")
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@ManyToOne(optional = false, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
 	@JoinColumn(name = "country_id")
 	private Country country;
 
 	@OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_account_id")
 	private List<UserRoleMap> userRoleMap;
 
 	public UserAccount(final String firstName, final String lastName, final String userName, final String password,
@@ -82,7 +81,7 @@ public class UserAccount {
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
-		this.projectSupported = projectSupported;
+		this.projectsSupported = projectSupported;
 		this.totalAmount = totalAmount;
 	}
 
