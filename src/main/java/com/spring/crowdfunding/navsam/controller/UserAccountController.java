@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.crowdfunding.navsam.entity.Country;
 import com.spring.crowdfunding.navsam.entity.UserAccount;
 import com.spring.crowdfunding.navsam.service.CountryService;
+import com.spring.crowdfunding.navsam.service.MailService;
 import com.spring.crowdfunding.navsam.service.UserAccountService;
 
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class UserAccountController {
 
 	private UserAccountService userAccountService;
 	private CountryService CountryService;
+	private MailService mailService;
 
 	@GetMapping("/allUsers")
 	public List<UserAccount> listAllUsers() {
@@ -64,6 +66,7 @@ public class UserAccountController {
 		Country theCountry = getCountryService().getCountryfromDb(theUserAccount.getCountry());
 		theUserAccount.setCountry(theCountry);
 		getUserAccountService().save(theUserAccount);
+		mailService.sendCreationEmail(theUserAccount);
 		return theUserAccount;
 	}
 
@@ -97,6 +100,11 @@ public class UserAccountController {
 	@Autowired
 	public void setCountryService(final CountryService countryService) {
 		this.CountryService = countryService;
+	}
+
+	@Autowired
+	public void setMailService(final MailService mailService) {
+		this.mailService = mailService;
 	}
 
 }

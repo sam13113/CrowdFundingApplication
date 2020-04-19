@@ -20,3 +20,6 @@ A simple crowdfunding application designed in Spring.
 
 #For any existing project error, RCL on the project, Go to Maven>Update Project.
 
+SMTP gmail
+for now its less secure so be sure to check 'Allow less secureApp' on the gmail account(https://myaccount.google.com/lesssecureapps?pli=1)
+
