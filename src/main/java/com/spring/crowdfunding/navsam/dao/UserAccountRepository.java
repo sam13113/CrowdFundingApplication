@@ -1,6 +1,8 @@
 
 package com.spring.crowdfunding.navsam.dao;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.spring.crowdfunding.navsam.entity.UserAccount;
@@ -17,5 +19,5 @@ import com.spring.crowdfunding.navsam.entity.UserAccount;
  *
  */
 public interface UserAccountRepository extends JpaRepository<UserAccount, Integer> {
-
+	Optional<UserAccount> findByUserName(String userName);
 }

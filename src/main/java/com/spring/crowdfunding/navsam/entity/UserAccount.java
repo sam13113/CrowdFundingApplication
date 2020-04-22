@@ -1,7 +1,8 @@
 
 package com.spring.crowdfunding.navsam.entity;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,9 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +40,9 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "user_account")
-public class UserAccount {
+public class UserAccount implements Serializable{
+
+	private static final long serialVersionUID = -6821160177318689580L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +56,7 @@ public class UserAccount {
 	private String lastName;
 
 	@Column(name = "user_name")
+	@NotEmpty(message = "Please provide a user name")
 	private String userName;
 
 	@Column(name = "password")
@@ -70,19 +76,25 @@ public class UserAccount {
 	@JoinColumn(name = "country_id")
 	private Country country;
 
-	@OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<UserRoleMap> userRoleMap;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, 
+			CascadeType.REFRESH })
+	@JoinTable(name = "user_role_map", joinColumns = @JoinColumn(name = "user_account_id"), inverseJoinColumns = @JoinColumn(name = "user_role_id"))
+	private Set<UserRole> userRoles;
 
 	public UserAccount(final String firstName, final String lastName, final String userName, final String password,
-			final String email, final int projectSupported, final double totalAmount) {
+			final String email, final int projectsSupported, final double totalAmount, final Country country,
+			final Set<UserRole> userRoles) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
-		this.projectsSupported = projectSupported;
+		this.projectsSupported = projectsSupported;
 		this.totalAmount = totalAmount;
+		this.country = country;
+		this.userRoles = userRoles;
+		this.userRoles.forEach(role -> role.getUseraccounts().add(this));
 	}
 
 }

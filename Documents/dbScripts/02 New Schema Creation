@@ -61,14 +61,12 @@ CREATE TABLE `user_role` (
 DROP TABLE IF EXISTS `user_role_map`;
 
 CREATE TABLE `user_role_map` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_account_id` int(11) DEFAULT NULL,
-  `user_role_id` int(11) DEFAULT NULL,
+    `user_account_id` int(11) NOT NULL,
+  `user_role_id` int(11) NOT NULL,
     
-  PRIMARY KEY (`id`),
-  KEY `FK_ACCOUNT_MAP_idx` (`user_account_id`),
-   KEY `FK_ROLE_MAP_idx` (`user_role_id`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+ PRIMARY KEY (`user_account_id`,`user_role_id`),
+  KEY `FK_ACCOUNT_MAP_idx` (`user_account_id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
   
 --

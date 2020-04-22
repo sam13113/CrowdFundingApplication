@@ -1,6 +1,8 @@
 
 package com.spring.crowdfunding.navsam.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +36,9 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "user_role_map")
-public class UserRoleMap {
+public class UserRoleMap implements Serializable {
+
+	private static final long serialVersionUID = -853888130723332456L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

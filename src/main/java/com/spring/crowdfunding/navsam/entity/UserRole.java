@@ -1,7 +1,9 @@
 
 package com.spring.crowdfunding.navsam.entity;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,8 +12,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,22 +39,39 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
+//@EntityListeners(PreventAnyUpdate.class)
 @Table(name = "user_role")
-public class UserRole {
+public class UserRole implements Serializable {
+
+	private static final long serialVersionUID = -5268574771083561660L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NotEmpty(message = "Please provide a id")
 	@Column(name = "id")
 	private int id;
 
 	@Column(name = "role_name")
+	@NotEmpty(message = "Please provide a role")
 	private String roleName;
 
-	@OneToMany(mappedBy = "userRole", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<UserRoleMap> userRoleMaps;
+	@ManyToMany(fetch = FetchType.EAGER, // mappedBy = "userRoles",
+			cascade =
+	{ CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	@JoinTable(name = "user_role_map", joinColumns = @JoinColumn(name = "user_role_id"), inverseJoinColumns = @JoinColumn(name = "user_account_id"))
+	private Set<UserAccount> useraccounts;
 
 	public UserRole(final String roleName) {
 		this.roleName = roleName;
 	}
+
+	public void Adduseraccount(final UserAccount useraccount) {
+		if (useraccounts == null) {
+			useraccounts = new HashSet<UserAccount>();
+		}
+		useraccounts.add(useraccount);
+	}
+
 
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.crowdfunding.navsam.dao.UserAccountRepository;
+import com.spring.crowdfunding.navsam.dao.UserRoleRepository;
 import com.spring.crowdfunding.navsam.entity.UserAccount;
 import com.spring.crowdfunding.navsam.service.UserAccountService;
 
@@ -31,6 +32,7 @@ import lombok.Getter;
 public class UserAccountServiceImpl implements UserAccountService {
 
 	private UserAccountRepository userAccountRepository;
+	private UserRoleRepository userRoleRepository;
 
 	@Override
 	public List<UserAccount> findAll() {
@@ -51,6 +53,12 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 	@Override
 	public void save(final UserAccount userAccount) {
+
+//		Set<UserRole> userRoles = userAccount.getUserRoles();
+//		for (UserRole userRole : userRoles) {
+//			userRole.setId(0);
+//			userRole.Adduseraccount(userAccount);
+//		}
 		getUserAccountRepository().save(userAccount);
 
 	}

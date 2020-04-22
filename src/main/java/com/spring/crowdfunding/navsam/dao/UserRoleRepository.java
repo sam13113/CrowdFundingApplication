@@ -17,5 +17,4 @@ import com.spring.crowdfunding.navsam.entity.UserRole;
  *
  */
 public interface UserRoleRepository extends JpaRepository<UserRole, Integer> {
-
 }

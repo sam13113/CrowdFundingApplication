@@ -4,6 +4,7 @@ package com.spring.crowdfunding.navsam.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.crowdfunding.navsam.constants.AuthoritiesConstants;
 import com.spring.crowdfunding.navsam.entity.Country;
 import com.spring.crowdfunding.navsam.entity.UserAccount;
 import com.spring.crowdfunding.navsam.service.CountryService;
@@ -44,6 +46,7 @@ public class UserAccountController {
 	private MailService mailService;
 
 	@GetMapping("/allUsers")
+	@PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
 	public List<UserAccount> listAllUsers() {
 		return getUserAccountService().findAll();
 	}
