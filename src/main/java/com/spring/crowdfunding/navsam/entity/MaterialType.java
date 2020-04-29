@@ -1,6 +1,7 @@
 
 package com.spring.crowdfunding.navsam.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,7 +25,7 @@ import lombok.ToString;
  * Nr.   Name       Date         Release/Description
  *---------------------------------------------------
  * 02
- * 01   Sarat     18 04 2020      New Class
+ * 01   Sarat     29 04 2020      New Class
  *
  * @author Sarat
  *
@@ -35,29 +36,26 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "project_status")
-public class ProjectStatus {
+@Table(name = "material_type")
+public class MaterialType implements Serializable {
+
+	private static final long serialVersionUID = -3678615315037174031L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "status_name")
-	private String statusName;
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "material_type_id")
+	private List<Material> materialsList;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REFRESH })
-	@JoinColumn(name = "project_status_id")
-	private List<Project> project;
+	@Column(name = "type_name")
+	private String typeName;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REFRESH })
-	@JoinColumn(name = "project_status_id")
-	private List<ProjectStatusHistory> projectHistoryList;
-
-	public ProjectStatus(final String statusName) {
-		this.statusName = statusName;
+	public MaterialType(final String typeName) {
+		this.typeName = typeName;
 	}
 
 }

@@ -2,6 +2,7 @@
 package com.spring.crowdfunding.navsam.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -76,10 +78,20 @@ public class UserAccount implements Serializable{
 	@JoinColumn(name = "country_id")
 	private Country country;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, 
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE,
 			CascadeType.REFRESH })
 	@JoinTable(name = "user_role_map", joinColumns = @JoinColumn(name = "user_account_id"), inverseJoinColumns = @JoinColumn(name = "user_role_id"))
 	private Set<UserRole> userRoles;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	@JoinColumn(name = "user_account_id")
+	private List<Comment> commentsList;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	@JoinColumn(name = "user_account_id")
+	private List<ProjectInvestor> projectInvestorList;
 
 	public UserAccount(final String firstName, final String lastName, final String userName, final String password,
 			final String email, final int projectsSupported, final double totalAmount, final Country country,

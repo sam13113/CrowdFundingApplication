@@ -2,6 +2,7 @@
 package com.spring.crowdfunding.navsam.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -78,14 +79,33 @@ public class Project {
 	@Column(name = "investors")
 	private int investors;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
-	@JoinColumn(name = "project_status")
 	private ProjectStatus projectStatus;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.DETACH, CascadeType.REFRESH })
+	@JoinColumn(name = "project_id")
+	private List<Comment> commentList;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.DETACH, CascadeType.REFRESH })
+	@JoinColumn(name = "project_id")
+	private List<Update> updateList;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.DETACH, CascadeType.REFRESH })
+	@JoinColumn(name = "project_id")
+	private List<ProjectStatusHistory> projectStatusHistoryList;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "project_id")
+	private List<Material> materialsList;
 
 	public Project(final String projectName, final Organisation organisation, final String projectDescription,
 			final String projectLocation, final LocalDate startDate, final LocalDate endDate, final double goal,
-			final double pledged, final int investors, final ProjectStatus projectStatus) {
+			final double pledged, final int investors) {
 		this.projectName = projectName;
 		this.organisation = organisation;
 		this.projectDescription = projectDescription;
@@ -95,7 +115,6 @@ public class Project {
 		this.goal = goal;
 		this.pledged = pledged;
 		this.investors = investors;
-		this.projectStatus = projectStatus;
 	}
 
 }

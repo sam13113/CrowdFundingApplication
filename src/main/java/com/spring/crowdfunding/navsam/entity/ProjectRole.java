@@ -37,11 +37,11 @@ public class ProjectRole {
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "organisation_name")
-	private String organisationName;
+	@Column(name = "role_name")
+	private String roleName;
 
-	public ProjectRole(final String organisationName) {
-		this.organisationName = organisationName;
+	public ProjectRole(final String roleName) {
+		this.roleName = roleName;
 	}
 
 }

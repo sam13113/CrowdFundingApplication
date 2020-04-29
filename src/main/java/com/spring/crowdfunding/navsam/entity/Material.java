@@ -4,12 +4,12 @@ package com.spring.crowdfunding.navsam.entity;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,7 +23,7 @@ import lombok.ToString;
  * Nr.   Name       Date         Release/Description
  *---------------------------------------------------
  * 02
- * 01   Sarat     18 04 2020      New Class
+ * 01   Sarat     29 04 2020      New Class
  *
  * @author Sarat
  *
@@ -34,34 +34,33 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "project_name")
-public class ProjectTeam implements Serializable{
+@Table(name = "material")
+public class Material implements Serializable {
 
-	private static final long serialVersionUID = 7245166951275301231L;
+	private static final long serialVersionUID = -4752727851051482653L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
-	@JoinColumn(name = "project_id")
 	private Project project;
 
-	@ManyToOne(optional = false, cascade = { CascadeType.DETACH, CascadeType.MERGE, // CascadeType.PERSIST,
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
-	@JoinColumn(name = "project_role_id")
-	private ProjectRole projectRole;
+	private MaterialType materialType;
 
-	@ManyToOne(optional = false, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REFRESH })
-	@JoinColumn(name = "participant_id")
-	private Participant participant;
+	@Column(name = "description")
+	private String description;
 
-	private String participantResponsibilities;
+	@Column(name = "link")
+	private String link;
 
-	public ProjectTeam(final String participantResponsibilities) {
-		this.participantResponsibilities = participantResponsibilities;
+	public Material(final String description, final String link) {
+		this.description = description;
+		this.link = link;
 	}
 
 }

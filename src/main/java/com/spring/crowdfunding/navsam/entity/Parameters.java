@@ -1,6 +1,10 @@
 
 package com.spring.crowdfunding.navsam.entity;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +26,7 @@ import lombok.ToString;
  * Nr.   Name       Date         Release/Description
  *---------------------------------------------------
  * 02
- * 01   Sarat     18 04 2020      New Class
+ * 01   Sarat     29 04 2020      New Class
  *
  * @author Sarat
  *
@@ -33,47 +37,33 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "participant")
-public class Participant {
+@Table(name = "parameters")
+public class Parameters implements Serializable {
 
+	private static final long serialVersionUID = 1506398396162017730L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "first_name")
-	private String firstname;
-
-	@Column(name = "last_name")
-	private String lastName;
-
-	@Column(name = "title")
-	private String title;
-
-	@Column(name = "description")
-	private String description;
-
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
-	@JoinColumn(name = "user_account_id")
-	private UserAccount userAccount;
+	@JoinColumn(name = "project_id")
+	private Project project;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REFRESH })
-	@JoinColumn(name = "organisation_id")
-	private Organisation organisation;
+	@Column(name = "end_date")
+	private LocalDate endDate;
 
-	@Column(name = "participated_in")
-	private int participatedIn;
+	@Column(name = "goal")
+	private double goal;
 
-	public Participant(final String firstname, final String lastName, final String description,
-			final int participatedIn) {
-		this.firstname = firstname;
-		this.lastName = lastName;
-		this.description = description;
-		this.participatedIn = participatedIn;
+	@Column(name = "timestamp")
+	private Timestamp timestamp;
+
+	public Parameters(final LocalDate endDate, final double goal, final Timestamp timestamp) {
+		this.endDate = endDate;
+		this.goal = goal;
+		this.timestamp = timestamp;
 	}
-
-
 
 }

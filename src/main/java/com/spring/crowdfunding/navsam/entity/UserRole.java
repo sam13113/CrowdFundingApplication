@@ -18,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -54,7 +56,7 @@ public class UserRole implements Serializable {
 	@Column(name = "role_name")
 	@NotEmpty(message = "Please provide a role")
 	private String roleName;
-
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER, // mappedBy = "userRoles",
 			cascade =
 	{ CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
