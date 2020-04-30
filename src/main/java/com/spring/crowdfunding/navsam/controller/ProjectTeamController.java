@@ -59,7 +59,7 @@ public class ProjectTeamController {
 		return projectTeam;
 	}
 
-	@PostMapping("/addProject")
+	@PostMapping("/addProjectTeam")
 	@PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
 	public ProjectTeamVM addProjectTeam(@RequestBody final ProjectTeamVM theProjectTeamVM) {
 		// set id to zero to save as a new ID instead
@@ -69,14 +69,14 @@ public class ProjectTeamController {
 		return theProjectTeamVM;
 	}
 
-	@PutMapping("/updateProject")
+	@PutMapping("/updateProjectTeam")
 	@PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
 	public ProjectTeamVM updateProjectTeam(@RequestBody @Valid final ProjectTeamVM theProjectTeamVM) {
 		getProjectTeamService().save(theProjectTeamVM);
 		return theProjectTeamVM;
 	}
 
-	@DeleteMapping("deleteProject/{theId}")
+	@DeleteMapping("deleteProjectTeam/{theId}")
 	@PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
 	public String deleteProjectTeams(@PathVariable final int theId) {
 		ProjectTeam theProjectTeam = getProjectTeamService().findById(theId);

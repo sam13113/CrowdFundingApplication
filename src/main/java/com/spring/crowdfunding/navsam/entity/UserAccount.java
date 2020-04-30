@@ -42,7 +42,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "user_account")
-public class UserAccount implements Serializable{
+public class UserAccount implements Serializable {
 
 	private static final long serialVersionUID = -6821160177318689580L;
 
@@ -78,8 +78,7 @@ public class UserAccount implements Serializable{
 	@JoinColumn(name = "country_id")
 	private Country country;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE,
-			CascadeType.REFRESH })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinTable(name = "user_role_map", joinColumns = @JoinColumn(name = "user_account_id"), inverseJoinColumns = @JoinColumn(name = "user_role_id"))
 	private Set<UserRole> userRoles;
 

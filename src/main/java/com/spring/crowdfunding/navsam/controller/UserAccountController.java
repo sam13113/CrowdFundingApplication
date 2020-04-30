@@ -55,7 +55,7 @@ public class UserAccountController {
 	public UserAccount getUserAccount(@PathVariable final int theId) {
 		UserAccount user = getUserAccountService().findById(theId);
 		if (user == null) {
-			throw new RuntimeException("Employee ID not found :" + theId);
+			throw new RuntimeException("UserAccount ID not found :" + theId);
 		}
 		return user;
 	}
