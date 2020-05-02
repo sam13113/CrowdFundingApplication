@@ -4,6 +4,7 @@ package com.spring.crowdfunding.navsam.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -66,6 +67,72 @@ public class UserAccountControllerTest {
 		assertEquals(responseEntity.getCommentsList(), getATestUserAccount().getCommentsList());
 		assertEquals(responseEntity.getProjectInvestorList(), getATestUserAccount().getProjectInvestorList());
 
+	}
+
+	@Test
+	public void testfindAllUsers() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		when(getUserAccountService().findAll()).thenReturn(getAllTestUsersAsList());
+
+		List<UserAccount> responseEntity = getUserAccountController().listAllUsers();
+
+		assertEquals(responseEntity.size(), getAllTestUsersAsList().size());
+	}
+
+	private List<UserAccount> getAllTestUsersAsList() {
+		List<UserAccount> allTestUsers = new ArrayList<>();
+
+		UserAccount userAccount1 = new UserAccount();
+
+		userAccount1.setId(1);
+		userAccount1.setFirstName("Lokesh1");
+		userAccount1.setLastName("Gupta1");
+		userAccount1.setUserName("Guptu1");
+		userAccount1.setPassword("password1");
+		userAccount1.setEmail("howtodoinjava1@gmail.com");
+		userAccount1.setProjectsSupported(2);
+		userAccount1.setTotalAmount(2650.3);
+		userAccount1.setCountry(getATestCountry());
+		userAccount1.setUserRoles(getaTestUserRoles());
+		userAccount1.setCommentsList(getATestCommentsList());
+		userAccount1.setProjectInvestorList(getATestInvestorList());
+
+		UserAccount userAccount2 = new UserAccount();
+
+		userAccount2.setId(2);
+		userAccount2.setFirstName("Lokesh2");
+		userAccount2.setLastName("Gupta2");
+		userAccount2.setUserName("Guptu2");
+		userAccount2.setPassword("password2");
+		userAccount2.setEmail("howtodoinjava2@gmail.com");
+		userAccount2.setProjectsSupported(2);
+		userAccount2.setTotalAmount(2650.3);
+		userAccount2.setCountry(getATestCountry());
+		userAccount2.setUserRoles(getaTestUserRoles());
+		userAccount2.setCommentsList(getATestCommentsList());
+		userAccount2.setProjectInvestorList(getATestInvestorList());
+
+		UserAccount userAccount3 = new UserAccount();
+
+		userAccount3.setId(3);
+		userAccount3.setFirstName("Lokesh3");
+		userAccount3.setLastName("Gupta3");
+		userAccount3.setUserName("Guptu3");
+		userAccount3.setPassword("password3");
+		userAccount3.setEmail("howtodoinjava3@gmail.com");
+		userAccount3.setProjectsSupported(2);
+		userAccount3.setTotalAmount(2650.3);
+		userAccount3.setCountry(getATestCountry());
+		userAccount3.setUserRoles(getaTestUserRoles());
+		userAccount3.setCommentsList(getATestCommentsList());
+		userAccount3.setProjectInvestorList(getATestInvestorList());
+
+		allTestUsers.add(userAccount1);
+		allTestUsers.add(userAccount2);
+		allTestUsers.add(userAccount3);
+		return allTestUsers;
 	}
 
 	private UserAccount getATestUserAccount() {
