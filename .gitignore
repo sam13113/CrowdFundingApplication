@@ -1,6 +1,7 @@
 HELP.md
 target/
 # dependencies
+/src/main/webapp
 /src/main/ngapp/node
 /src/main/ngapp/node_modules
 
