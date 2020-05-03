@@ -1,5 +1,9 @@
 HELP.md
 target/
+# dependencies
+/src/main/ngapp/node
+/src/main/ngapp/node_modules
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
@@ -29,3 +33,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
