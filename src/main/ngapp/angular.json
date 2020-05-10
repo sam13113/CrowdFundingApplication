@@ -29,9 +29,23 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/bootstrap/scss/bootstrap.scss",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/font-awesome/scss/font-awesome.scss",
+              "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
+              "src/assets/css/style-2.css",
+              "src/assets/css/style.css",
+              "src/assets/fonts/flaticon.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/jquery-1.12.4.min.js",
+              "./node_modules/froala-editor/js/froala_editor.pkgd.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/js/jquery.flexslider.js",
+              "src/assets/js/plug-ins.js",
+              "src/assets/js/main.js"
+            ]
           },
           "configurations": {
             "production": {

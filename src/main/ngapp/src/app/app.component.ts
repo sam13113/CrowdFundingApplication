@@ -6,9 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'crowdfunding';
+  modalType: string;
 
   setModalType(type) {
-
+    this.modalType = type;
   }
 }
